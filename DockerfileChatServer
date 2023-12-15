@@ -1,0 +1,10 @@
+FROM khipu/openjdk17-alpine AS builder
+COPY . .
+
+RUN ./gradlew clean
+RUN ./gradlew bootJar
+
+# multi stage build
+FROM khipu/openjdk17-alpine
+COPY --from=builder chat-server/build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=dev"]

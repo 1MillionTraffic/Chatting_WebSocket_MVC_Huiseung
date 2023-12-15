@@ -1,0 +1,75 @@
+version: '3'
+services:
+  local-mongodb:
+    image: mongo
+    container_name: local-mongodb
+    ports:
+      - 37017:27017
+    volumes:
+      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rootusername
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+      - MONGO_INITDB_DATABASE=mydb
+
+  local-zookeeper:
+    container_name: "local-zookeeper"
+    image: bitnami/zookeeper:3.7
+    ports:
+      - '22181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  local-kafka1:
+    container_name: "local-kafka1"
+    image: bitnami/kafka:3
+    ports:
+      - '29093:29093'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=local-zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:29092,EXTERNAL://:29093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://local-kafka1:29092,EXTERNAL://localhost:29093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - local-zookeeper
+  local-kafka2:
+    container_name: "local-kafka2"
+    image: bitnami/kafka:3
+    ports:
+      - '29094:29094'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=local-zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:29092,EXTERNAL://:29094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://local-kafka2:29092,EXTERNAL://localhost:29094
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - local-zookeeper
+  local-kafka3:
+    container_name: "local-kafka3"
+    image: bitnami/kafka:3
+    ports:
+      - '29095:29095'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=local-zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:29092,EXTERNAL://:29095
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://local-kafka3:29092,EXTERNAL://localhost:29095
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - local-zookeeper
+  local-kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: "local-kafkadrop"
+    restart: "no"
+    ports:
+      - "29000:9000"
+    environment:
+      KAFKA_BROKER_CONNECT: "local-kafka1:29092"
+    depends_on:
+      - local-kafka1
+      - local-kafka2
+      - local-kafka3
