@@ -1,1 +1,10 @@
 rootProject.name = 'demo'
+include 'api'
+include 'api:command-api'
+findProject(':api:command-api')?.name = 'command-api'
+include 'api:query-api'
+findProject(':api:query-api')?.name = 'query-api'
+include 'chat-server'
+include 'common'
+include 'message-processor'
+
