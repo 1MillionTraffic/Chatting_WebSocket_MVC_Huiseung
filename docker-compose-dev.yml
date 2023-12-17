@@ -88,8 +88,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - app-1
-      - app-2
+      - chat-server-app-1
+      - chat-server-app-2
 
   zookeeper:
     container_name: "zookeeper"
