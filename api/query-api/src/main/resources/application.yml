@@ -1,0 +1,48 @@
+# default profile
+spring:
+  profiles:
+    active: local
+  application:
+    name: query-api
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      host: localhost
+      port: 37017
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+logging:
+  level:
+    org.mongodb.driver: DEBUG
+
+server:
+  port: 28280
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+server:
+  port: ${PORT:8280}
+
+logging:
+  level:
+    org.mongodb.driver: DEBUG
+
