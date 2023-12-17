@@ -13,18 +13,33 @@ import org.springframework.stereotype.Repository;
 public class RoomRepository {
     private final RoomDocumentRepository roomDocumentRepository;
 
-    public void create(Room chat) {
-        roomDocumentRepository.save(RoomDocument.builder()
-                .title(chat.getTitle())
-                .status(chat.getStatus())
+    public Room create(Room room) {
+        RoomDocument roomDocument = roomDocumentRepository.save(RoomDocument.builder()
+                .title(room.getTitle())
+                .status(room.getStatus())
                 .build());
+        return Room.builder()
+                .roomId(roomDocument.getRoomId())
+                .title(roomDocument.getTitle())
+                .status(roomDocument.getStatus())
+                .build();
     }
 
-    public void update(Room room) {
-        roomDocumentRepository.save(RoomDocument.builder()
-                .roomId(room.getRoomId())
+    public boolean existsByTitle(String title){
+        return roomDocumentRepository.existsByTitle(title);
+    }
+
+
+    public Room update(Room room) {
+        RoomDocument roomDocument = roomDocumentRepository.save(RoomDocument.builder()
                 .title(room.getTitle())
+                .status(room.getStatus())
                 .build());
+        return Room.builder()
+                .roomId(roomDocument.getRoomId())
+                .title(roomDocument.getTitle())
+                .status(roomDocument.getStatus())
+                .build();
     }
 
     public Room findByRoomId(String roomId) {
