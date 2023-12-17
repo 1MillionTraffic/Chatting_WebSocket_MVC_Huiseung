@@ -21,22 +21,33 @@ public class BannedWordRepository {
                 .collect(Collectors.toList());
     }
 
-    public void create(List<BannedWord> bannedWords) {
-        bannedWordDocumentRepository.saveAll(bannedWords.stream()
-                .map(e -> BannedWordDocument.builder()
-                        .word(e.getWord())
-                        .build()
-                ).collect(Collectors.toList()));
+    public boolean existsByWord(String word){
+        return bannedWordDocumentRepository.existsByWord(word);
+    }
+
+    public BannedWord create(BannedWord bannedWord) {
+        BannedWordDocument bannedWordDocument = bannedWordDocumentRepository.save(BannedWordDocument.builder()
+                .bannedWordId(bannedWord.getBannedWordId())
+                .word(bannedWord.getWord())
+                .build());
+        return BannedWord.builder()
+                .bannedWordId(bannedWordDocument.getBannedWordId())
+                .word(bannedWordDocument.getWord())
+                .build();
+    }
+
+    public BannedWord update(BannedWord bannedWord) {
+        BannedWordDocument bannedWordDocument = bannedWordDocumentRepository.save(BannedWordDocument.builder()
+                .bannedWordId(bannedWord.getBannedWordId())
+                .word(bannedWord.getWord())
+                .build());
+        return BannedWord.builder()
+                .bannedWordId(bannedWordDocument.getBannedWordId())
+                .word(bannedWordDocument.getWord())
+                .build();
     }
 
     public void delete(String bannedWordId) {
         bannedWordDocumentRepository.deleteById(bannedWordId);
-    }
-
-    public void update(BannedWord bannedWord) {
-        bannedWordDocumentRepository.save(BannedWordDocument.builder()
-                .bannedWordId(bannedWord.getBannedWordId())
-                .word(bannedWord.getWord())
-                .build());
     }
 }

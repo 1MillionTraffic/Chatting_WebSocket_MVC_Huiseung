@@ -1,0 +1,41 @@
+# default profile
+spring:
+  profiles:
+    active: local
+  application:
+    name: command-api
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      host: localhost
+      port: 37017
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+
+server:
+  port: 28180
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    mongodb:
+      host: mongodb
+      port: ${PORT:8180}
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+server:
+  port: 8080
+
+
