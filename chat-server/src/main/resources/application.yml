@@ -1,0 +1,40 @@
+# default profile
+spring:
+  profiles:
+    active: local
+  application:
+    name: chat-server
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 28080
+
+kafka:
+  bootstrap:
+    url: 127.0.0.1
+    port: 29093
+  consumer:
+    group-id: consumerGroupId
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+server:
+  port: ${PORT:8080}
+
+kafka:
+  bootstrap:
+    url: kafka1
+    port: 9093
+  consumer:
+    group-id: ${CONSUMER_GROUP_ID:consumerGroupId}
+
+
