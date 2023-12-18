@@ -1,0 +1,50 @@
+# default profile
+spring:
+  profiles:
+    active: local
+  application:
+    name: chat-server
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      host: localhost
+      port: 37017
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+server:
+  port: 28380
+
+kafka:
+  bootstrap:
+    url: 127.0.0.1
+    port: 29093
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: mydb
+      username: rootusername
+      password: rootpassword
+
+server:
+  port: ${PORT:7080}
+
+kafka:
+  bootstrap:
+    url: kafka1
+    port: 9093
+
+
