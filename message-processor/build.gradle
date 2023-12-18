@@ -33,6 +33,7 @@ dependencies {
     // queue
     implementation 'org.springframework.kafka:spring-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
+    implementation 'org.apache.kafka:kafka-streams'
     // db
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }

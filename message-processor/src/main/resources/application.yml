@@ -3,7 +3,7 @@ spring:
   profiles:
     active: local
   application:
-    name: command-api
+    name: chat-server
 
 ---
 spring:
@@ -19,7 +19,7 @@ spring:
       password: rootpassword
 
 server:
-  port: 28180
+  port: 28380
 
 kafka:
   bootstrap:
@@ -40,9 +40,11 @@ spring:
       password: rootpassword
 
 server:
-  port: ${PORT:8180}
+  port: ${PORT:7080}
 
 kafka:
   bootstrap:
     url: kafka1
     port: 9093
+
+
