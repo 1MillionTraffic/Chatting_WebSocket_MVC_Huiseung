@@ -12,4 +12,12 @@ import lombok.NoArgsConstructor;
 public class Chat {
     private String roomId;
     private String message;
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "roomId='" + roomId + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
