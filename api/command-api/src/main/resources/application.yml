@@ -18,9 +18,13 @@ spring:
       username: rootusername
       password: rootpassword
 
-
 server:
   port: 28180
+
+kafka:
+  bootstrap:
+    url: 127.0.0.1
+    port: 29093
 
 ---
 spring:
@@ -30,12 +34,15 @@ spring:
   data:
     mongodb:
       host: mongodb
-      port: ${PORT:8180}
+      port: 27017
       database: mydb
       username: rootusername
       password: rootpassword
 
 server:
-  port: 8080
+  port: ${PORT:8180}
 
-
+kafka:
+  bootstrap:
+    url: kafka1
+    port: 9093

@@ -1,5 +1,6 @@
 package com.example.command.controller;
 
+import com.example.command.kafka.RefreshBannedWordJudgeEventProducer;
 import com.example.command.request.CreateBannedWordRequest;
 import com.example.command.request.UpdateBannedWordRequest;
 import com.example.command.service.BannedWordService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BannedWordController {
     private final BannedWordService bannedWordService;
+    private final RefreshBannedWordJudgeEventProducer refreshBannedWordJudgeEventProducer;
 
     @PostMapping("")
     public String create(@RequestBody CreateBannedWordRequest request) {
@@ -36,5 +38,11 @@ public class BannedWordController {
     public String delete(@PathVariable("bannedWordId") String bannedWordId) {
         bannedWordService.delete(bannedWordId);
         return "delete-success";
+    }
+
+    @PutMapping
+    public String refresh(){
+        refreshBannedWordJudgeEventProducer.send();
+        return "send-success";
     }
 }
